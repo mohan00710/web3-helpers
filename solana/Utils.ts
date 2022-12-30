@@ -35,7 +35,10 @@ export const signAndExecuteTransactionInstruction = async (
     payerKey: payer.publicKey,
     recentBlockhash: blockhash,
     instructions: [instruction], //you can add multiple instruction into the array
-  }).compileToV0Message();
+  })
+    .compileToV0Message
+    //[lookUptable] u can add your lookup tables here
+    ();
 
   const transaction = new VersionedTransaction(messageV0);
   transaction.sign([payer]);
@@ -43,6 +46,7 @@ export const signAndExecuteTransactionInstruction = async (
     maxRetries: 2,
   });
   let block = await _connection().getLatestBlockhash("confirmed");
+
   await _connection().confirmTransaction(
     {
       signature: transactionId,
@@ -54,3 +58,5 @@ export const signAndExecuteTransactionInstruction = async (
   console.log("transaction signed and submitted", transactionId);
   return transactionId;
 };
+
+
